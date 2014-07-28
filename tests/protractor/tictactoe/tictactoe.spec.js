@@ -46,8 +46,8 @@ describe('TicTacToe App', function () {
     expect(cells.count()).toBe(9);
 
     // Make sure the board is empty
-    cells.each(function(element) {
-      expect(element.getText()).toBe('');
+    cells.each(function(cell) {
+      expect(cell.getText()).toBe('');
     });
   });
 
