@@ -11,6 +11,12 @@ describe('Todo App', function () {
   // Reference to the todos repeater
   var todos = element.all(by.repeater('(id, todo) in todos'));
 
+  // Reference to the new todo input
+  var newTodoInput = $('newTodoInput');
+
+  // Referene to add random todo button
+  var addRandomTodoButton = $('#addRandomTodoButton');
+
   beforeEach(function (done) {
     // Navigate to the todo app
     browser.get('todo/todo.html');
@@ -41,7 +47,6 @@ describe('Todo App', function () {
 
   it('adds new Todos', function () {
     // Add three new todos by typing into the input and pressing enter
-    var newTodoInput = element(by.model('newTodo'));
     newTodoInput.sendKeys('Buy groceries\n');
     newTodoInput.sendKeys('Run 10 miles\n');
     newTodoInput.sendKeys('Build Firebase\n');
@@ -51,7 +56,6 @@ describe('Todo App', function () {
 
   it('adds random Todos', function () {
     // Add a three new random todos via the provided button
-    var addRandomTodoButton = $('#addRandomTodoButton');
     addRandomTodoButton.click();
     addRandomTodoButton.click();
     addRandomTodoButton.click();
