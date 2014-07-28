@@ -1,10 +1,10 @@
 var protractor = require('protractor');
 var Firebase = require('firebase');
 
-describe('TicTacToe App', function () {
-  // Protractor instance
-  var ptor = protractor.getInstance();
+// Protractor instance
+var ptor = protractor.getInstance();
 
+describe('TicTacToe App', function () {
   // Reference to the Firebase which stores the data for this demo
   var firebaseRef = new Firebase('https://angularFireTests.firebaseio-demo.com/tictactoe');
 
