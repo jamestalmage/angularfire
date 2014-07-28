@@ -48,15 +48,9 @@ describe('Chat App', function () {
 
   it('adds new messages', function () {
     // Add three new messages by typing into the input and pressing enter
-    newMessageInput.sendKeys('Hey there!\n').then(function() {
-      console.log("sendKeys() 1");
-    });
-    newMessageInput.sendKeys('Oh, hi. How are you?\n').then(function() {
-      console.log("sendKeys() 2");
-    });
-    newMessageInput.sendKeys('Pretty fantastic!\n').then(function() {
-      console.log("sendKeys() 3");
-    });
+    newMessageInput.sendKeys('Hey there!\n');
+    newMessageInput.sendKeys('Oh, hi. How are you?\n');
+    newMessageInput.sendKeys('Pretty fantastic!\n');
 
     // We should only have two messages in the repeater since we did a limit query
     expect(messages.count()).toBe(2);

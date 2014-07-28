@@ -12,7 +12,7 @@ describe('Todo App', function () {
   var todos = element.all(by.repeater('(id, todo) in todos'));
 
   // Reference to the new todo input
-  var newTodoInput = $('newTodoInput');
+  var newTodoInput = $('#newTodoInput');
 
   // Referene to add random todo button
   var addRandomTodoButton = $('#addRandomTodoButton');
