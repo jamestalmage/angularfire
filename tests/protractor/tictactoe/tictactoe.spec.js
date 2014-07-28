@@ -1,9 +1,6 @@
 var protractor = require('protractor');
 var Firebase = require('firebase');
 
-// Protractor instance
-var ptor = protractor.getInstance();
-
 describe('TicTacToe App', function () {
   // Reference to the Firebase which stores the data for this demo
   var firebaseRef = new Firebase('https://angularFireTests.firebaseio-demo.com/tictactoe');
@@ -26,7 +23,7 @@ describe('TicTacToe App', function () {
       });
     }
     else {
-      ptor.sleep(500);
+      browser.sleep(500);
       done();
     }
   });
@@ -43,7 +40,7 @@ describe('TicTacToe App', function () {
     $('#resetRef').click();
 
     // Wait for the board to reset
-    ptor.sleep(1000);
+    browser.sleep(1000);
 
     // Make sure the board has 9 cells
     expect(cells.count()).toBe(9);
@@ -96,7 +93,7 @@ describe('TicTacToe App', function () {
     browser.refresh();
 
     // Sleep to allow Firebase bindings to take effect
-    ptor.sleep(500);
+    browser.sleep(500);
 
     // Make sure the content of the previously clicked cell is empty
     expect(cells.get(4).getText()).toBe('');

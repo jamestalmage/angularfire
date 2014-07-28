@@ -1,9 +1,6 @@
 var protractor = require('protractor');
 var Firebase = require('firebase');
 
-// Protractor instance
-var ptor = protractor.getInstance();
-
 describe('Priority App', function () {
   // Reference to the Firebase which stores the data for this demo
   var firebaseRef = new Firebase('https://angularFireTests.firebaseio-demo.com/priority');
@@ -26,7 +23,7 @@ describe('Priority App', function () {
       });
     }
     else {
-      ptor.sleep(500);
+      browser.sleep(500);
       done();
     }
   });
@@ -85,7 +82,7 @@ describe('Priority App', function () {
             expect($('.message:nth-of-type(3) .content').getText()).toEqual('Hey there!');
 
             // We need to sleep long enough for the promises above to resolve
-            ptor.sleep(500).then(function() {
+            browser.sleep(500).then(function() {
               done();
             });
           });

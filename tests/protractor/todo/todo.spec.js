@@ -1,9 +1,6 @@
 var protractor = require('protractor');
 var Firebase = require('firebase');
 
-// Protractor instance
-var ptor = protractor.getInstance();
-
 describe('Todo App', function () {
   // Reference to the Firebase which stores the data for this demo
   var firebaseRef = new Firebase('https://angularFireTests.firebaseio-demo.com/todo');
@@ -26,7 +23,7 @@ describe('Todo App', function () {
       });
     }
     else {
-      ptor.sleep(500);
+      browser.sleep(500);
       done();
     }
   });
