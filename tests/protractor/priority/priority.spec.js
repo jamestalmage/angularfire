@@ -31,7 +31,54 @@ describe('Priority App', function () {
     }
   });
 
-  it('loads', function () {
+  it('a', function (done) {
+    var d = protractor.promise.defer();
+    setTimeout(function() {
+      console.log("fulfill");
+      d.fulfill('ok');
+      done();
+    }, 3000);
+    expect(d).toBe('ok');
+  });
+
+  it('b', function (done) {
+    var d = protractor.promise.defer();
+    setTimeout(function() {
+      console.log("fulfill");
+      d.fulfill('ok');
+      done();
+    }, 3000);
+    expect(d).toBe('ok');
+  });
+
+  it('c', function (done) {
+    var d = protractor.promise.defer();
+    setTimeout(function() {
+      console.log("fulfill");
+      d.fulfill('ok');
+      done();
+    }, 3000);
+    expect(d).toBe('ok');
+  });
+
+  it('d', function (done) {
+    var d = protractor.promise.defer();
+    setTimeout(function() {
+      console.log("fulfill");
+      d.fulfill('ok');
+      done();
+    }, 3000);
+    expect(d).toBe('ok');
+  });
+
+  it('e', function (done) {
+    var d = protractor.promise.defer();
+    setTimeout(function() {
+      console.log("fulfill");
+      d.fulfill('ok');
+      done();
+    }, 3000);
+    expect(d).toBe('ok');
   });
 
   it('has the correct title', function () {
