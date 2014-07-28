@@ -11,6 +11,9 @@ describe('Priority App', function () {
   // Reference to the messages repeater
   var messages = element.all(by.repeater('message in messages'));
 
+  // Reference to new message input
+  var newMessageInput = $('#newMessageInput');
+
   beforeEach(function (done) {
     // Navigate to the priority app
     browser.get('priority/priority.html');
@@ -42,7 +45,6 @@ describe('Priority App', function () {
 
   it('adds new messages with the correct priority', function () {
     // Add three new messages by typing into the input and pressing enter
-    var newMessageInput = element(by.model('message'));
     newMessageInput.sendKeys('Hey there!\n');
     newMessageInput.sendKeys('Oh, hi. How are you?\n');
     newMessageInput.sendKeys('Pretty fantastic!\n');

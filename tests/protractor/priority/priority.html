@@ -31,7 +31,7 @@
 
     <!-- Messages list -->
     <div id="messagesList">
-      <div class="message" ng-repeat="message in messages" ng-cloak >
+      <div class="message" ng-repeat="message in messages">
         <em>{{ message.from }}: </em>
         <span class="content">{{ message.content }}</span>
         <span>Priority: <span class="priority">{{ message.$priority }}</span></span>
@@ -40,7 +40,7 @@
 
     <!-- Add message form -->
     <form ng-submit="addMessage()">
-      <input id="message" type="text" ng-model="message" placeholder="Message...">
+      <input id="newMessageInput" type="text" ng-model="message" placeholder="Message...">
       <input id="submit" type="submit" value="Submit">
     </form>
 

@@ -11,6 +11,9 @@ describe('Chat App', function () {
   // Reference to the messages repeater
   var messages = element.all(by.repeater('message in messages'));
 
+  // Reference to new message input
+  var newMessageInput = $('#newMessageInput');
+
   // Reference to messages count
   var messagesCount = element(by.id('messagesCount'));
 
@@ -45,16 +48,21 @@ describe('Chat App', function () {
 
   it('adds new messages', function () {
     // Add three new messages by typing into the input and pressing enter
-    var newMessageInput = element(by.model('message'));
+    console.log("a");
     newMessageInput.sendKeys('Hey there!\n');
+    console.log("b");
     newMessageInput.sendKeys('Oh, hi. How are you?\n');
+    console.log("c");
     newMessageInput.sendKeys('Pretty fantastic!\n');
+    console.log("d");
 
     // We should only have two messages in the repeater since we did a limit query
     expect(messages.count()).toBe(2);
+    console.log("e");
 
     // Messages count should include all messages, not just the ones displayed
     expect(messagesCount.getText()).toEqual('3');
+    console.log("f");
   });
 
   it('updates upon new remote messages', function (done) {
