@@ -5,10 +5,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     meta: {
-      banner: '/*!\n <%= pkg.title || pkg.name %> v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-        '* Copyright (c) <%= grunt.template.today("yyyy") %> Firebase, Inc.\n' +
-        '* MIT LICENSE: http://firebase.mit-license.org/\n*/\n\n'
+      banner: '/*!\n * <%= pkg.title || pkg.name %> <%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
+        ' * Copyright (c) <%= grunt.template.today("yyyy") %> Firebase, Inc.\n' +
+        ' * MIT LICENSE: http://firebase.mit-license.org/\n */\n\n'
     },
 
     // merge files from src/ into angularfire.js
@@ -51,6 +51,9 @@ module.exports = function(grunt) {
 
     // Minify JavaScript
     uglify : {
+      options: {
+        preserveComments: 'some'
+      },
       app : {
         files : {
           'dist/angularfire.min.js' : ['dist/angularfire.js']
@@ -134,7 +137,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test:manual', ['karma:manual']);
 
   // Travis CI testing
-  grunt.registerTask('travis', ['build', 'test:unit', 'connect:testserver', 'protractor:saucelabs']);
+  grunt.registerTask('test:travis', ['build', 'test:unit', 'connect:testserver', 'protractor:saucelabs']);
 
   // Build tasks
   grunt.registerTask('build', ['concat', 'jshint', 'uglify']);
