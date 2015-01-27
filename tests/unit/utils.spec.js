@@ -1,13 +1,24 @@
 'use strict';
 describe('$firebaseUtils', function () {
-  var $utils, $timeout, testutils;
+  var $utils, $timeout, testutils, $parse;
   beforeEach(function () {
     module('firebase');
     module('testutils');
-    inject(function (_$firebaseUtils_, _$timeout_, _testutils_) {
+    inject(function (_$firebaseUtils_, _$timeout_, _testutils_,_$parse_) {
       $utils = _$firebaseUtils_;
       $timeout = _$timeout_;
       testutils = _testutils_;
+      $parse = _$parse_;
+    });
+  });
+
+  describe('parse behavior',function(){
+    it('should not leave $value laying around',function(){
+      var getter = $parse('user.data');
+      var setter = getter.assign;
+      var context = {user:{data:{$value:null}}};
+      setter(context,{foo:'bar'});
+      expect(context).toEqual({user:{data:{foo:'bar'}}});
     });
   });
 
@@ -105,7 +116,7 @@ describe('$firebaseUtils', function () {
 
     it('should delete $value property if not a primitive',function(){
       var rec = {$id:'foo', $priority:null, $value:null };
-      $utils.updateRec(rec, testutils.snap({bar: 'baz', baz:'foo'}));
+      $utils.updateRec(rec, testutils.snap({bar: 'baz', baz:'foo', $value:null}));
       expect(rec).toEqual({bar: 'baz', baz: 'foo', $id: 'foo', $priority: null});
     });
   });

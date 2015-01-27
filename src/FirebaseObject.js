@@ -195,6 +195,7 @@
          * @return {boolean} true if any changes were made.
          */
         $$updated: function (snap) {
+          console.log('$$updated');
           // applies new data to this object
           var changed = $firebaseUtils.updateRec(this, snap);
           // applies any defaults set using $$defaults
@@ -223,7 +224,9 @@
         $$scopeUpdated: function(newData) {
           // we use a one-directional loop to avoid feedback with 3-way bindings
           // since set() is applied locally anyway, this is still performant
-          return this.$inst().$set($firebaseUtils.toJSON(newData));
+          var jsonData = $firebaseUtils.toJSON(newData);
+          console.log('$$scopeUpdated:', jsonData);
+          return this.$inst().$set(jsonData);
         },
 
         /**
@@ -231,6 +234,7 @@
          * notifies listeners registered with $watch
          */
         $$notify: function() {
+          console.log('$$notify');
           var self = this, list = this.$$conf.listeners.slice();
           // be sure to do this after setting up data and init state
           angular.forEach(list, function (parts) {
@@ -321,9 +325,13 @@
             function equals(rec) {
               var parsed = getScope();
               var newData = $firebaseUtils.scopeData(rec);
-              return angular.equals(parsed, newData) &&
+              //console.log('parsed: ', parsed);
+              //console.log('newData: ', newData);
+              var result = angular.equals(parsed, newData) &&
                 parsed.$priority === rec.$priority &&
                 parsed.$value === rec.$value;
+              console.log('equals:', result, parsed, newData);
+              return result;
             }
 
             function getScope() {
@@ -331,15 +339,36 @@
             }
 
             function setScope(rec) {
-              parsed.assign(scope, $firebaseUtils.scopeData(rec));
+              var sd = $firebaseUtils.scopeData(rec);
+              console.log('setScope', sd);
+              parsed.assign(scope, sd);
             }
 
             var send = $firebaseUtils.debounce(function() {
-              rec.$$scopeUpdated(getScope())
-                ['finally'](function() { sending = false; });
+              var gottenVal = getScope();
+              var delete$Value = !gottenVal.hasOwnProperty('$value');
+              console.log('sending:' , gottenVal);
+              //console.log('rec before:', rec.hasOwnProperty('$value'), rec.hasOwnProperty('text'));
+              rec.$$scopeUpdated(gottenVal)
+                  .then(function(val){
+                    //console.log('success',val);
+                    return val;
+                  },function(err){
+                    console.log('err',err);
+                  })
+                ['finally'](function() {
+                if(delete$Value){
+                  delete rec.$value;
+                  delete parsed(scope).$value;
+
+                }
+                sending = false;
+                //console.log('rec after:', rec.hasOwnProperty('$value'), rec.hasOwnProperty('text'));
+                });
             }, 50, 500);
 
             var scopeUpdated = function() {
+              console.log('scope updated, sending:' + sending);
               if( !equals(rec) ) {
                 sending = true;
                 send();
@@ -347,6 +376,7 @@
             };
 
             var recUpdated = function() {
+              console.log('rec updated, sending:' + sending);
               if( !sending && !equals(rec) ) {
                 setScope(rec);
               }
@@ -356,6 +386,7 @@
             // manually check $priority and $value using this method
             function checkMetaVars() {
               var dat = parsed(scope);
+              console.log('checkMeta',{$value:dat.$value},{$value:rec.$value});
               if( dat.$value !== rec.$value || dat.$priority !== rec.$priority ) {
                 scopeUpdated();
               }

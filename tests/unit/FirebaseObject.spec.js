@@ -334,6 +334,8 @@ describe('$FirebaseObject', function() {
       $interval.flush(500);
       $timeout.flush(); // for $interval
       //$timeout.flush(); // for $watch
+      flushAll();
+      flushAll();
       expect($scope.test).toEqual({text: 'hello', $id: obj.$id, $priority: obj.$priority});
     });
 
@@ -366,6 +368,39 @@ describe('$FirebaseObject', function() {
       $timeout.flush(); // for $interval
       $timeout.flush(); // for $watch
       expect(spy).toHaveBeenCalledWith(jasmine.objectContaining({'.value': 'bar'}));
+    });
+
+    it('should delete $value if scope changes to object', function () {
+      var $scope = $rootScope.$new();
+      var mfb = new MockFirebase('Mock://');
+      mfb.autoFlush(true);
+      $fb = new $firebase(mfb);
+      var obj = new $FirebaseObject($fb, noop, $utils.resolve());
+      obj.$$updated(testutils.refSnap($fb.$ref(), 'foo', null));
+      expect(obj.$value).toBe('foo');
+      obj.$bindTo($scope, 'test');
+      $timeout.flush(); // for $loaded
+      flushAll();
+      flushAll();
+      $scope.$apply(function() {
+        //$scope.test = {foo:'bar'};
+        $scope.test.$value = 'bar';
+      });
+      expect($scope.test.$value).toEqual('bar');
+      //obj.$$notify();
+      //$interval.flush(500);
+      $timeout.flush(); // for $interval
+      $timeout.flush(); // for $watch
+    //  mfb.flush();
+      //$interval.flush(500);
+      //$interval.flush(500);
+      $timeout.flush(); // for $watch
+      $timeout.flush(); // for $watch
+      $timeout.flush(); // for $watch
+      $timeout.flush(); // for $watch
+      $timeout.flush(); // for $watch
+      expect($scope.test.$value).toEqual('bar');
+      //expect(obj.$value).toEqual('bar');
     });
 
     it('should throw error if double bound', function() {
@@ -566,7 +601,14 @@ describe('$FirebaseObject', function() {
     });
 
     it('should remove other keys when setting primitive', function() {
-      var keys = Object.keys(obj);
+      obj.$$updated(fakeSnap({'key1': true, 'key2': 5}));
+      var expected = Object.keys(obj).filter(function(val){
+        return val != 'key1' && val != 'key2'
+      });
+      expected.push('$value');
+      expected = expected.sort();
+      obj.$$updated(fakeSnap(true));
+      expect(Object.keys(obj).sort()).toEqual(expected);
     });
 
     it('should preserve the id', function() {

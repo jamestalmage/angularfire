@@ -316,7 +316,12 @@
             if( dataOrRec.hasOwnProperty('$value') ) {
               data.$value = dataOrRec.$value;
             }
-            return utils.extendData(data, dataOrRec);
+            utils.each(dataOrRec, function(v,k) {
+              data[k] = utils.deepCopy(v);
+              delete data.$value;
+            });
+            return data;
+            //return utils.extendData(data, dataOrRec);
           },
 
           updateRec: function(rec, snap) {
