@@ -360,7 +360,7 @@
                   var c = k.charAt(0);
                   if (c !== '_' && c !== '$' && c !== '.') {
                     delete obj.$value;
-                    return [obj, obj.$priority, undefined];
+                    return [obj, obj.$priority];
                   }
                 }
               }
