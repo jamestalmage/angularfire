@@ -337,6 +337,30 @@ describe('$FirebaseObject', function() {
       expect($scope.test).toEqual({text: 'hello', $id: obj.$id, $priority: obj.$priority});
     });
 
+    it('should delete $value aggressively to avoid multiple digests', function () {
+      //WARNING: Potentially brittle test.
+      var $scope = $rootScope.$new();
+      var digestCount = 0;
+      $scope.$watch(function(){
+         digestCount ++;
+      });
+      var obj = makeObject();
+      obj.$bindTo($scope, 'test');
+      obj.$$$ready('foo');
+      expect($scope.test).toEqual({$value: 'foo', $id: obj.$id, $priority: obj.$priority});
+      $scope.$apply(function() {
+        $scope.test.text = 'bar';
+      });
+      $interval.flush(500);
+      $timeout.flush(); // for $interval
+      $scope.$apply();
+      //This expectation is fairly arbitrary, and the number of digest cycles required may change as the
+      // code base evolves. If it fails with a higher value, you should re-evaluate your code and try to
+      // cause fewer digest cycles. If it fails lower, then you have improved efficiency, and can lower
+      // the expected value to match.
+      expect(digestCount).toEqual(6);
+    });
+
     it('should update $priority if $priority changed in $scope', function () {
       var $scope = $rootScope.$new();
       var spy = obj.$inst().$set;

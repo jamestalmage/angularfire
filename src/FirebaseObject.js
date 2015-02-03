@@ -333,10 +333,6 @@
               rec.$$scopeUpdated(scopeData)
                 ['finally'](function() {
                   sending = false;
-                  if(!scopeData.hasOwnProperty('$value')){
-                    delete rec.$value;
-                    delete parsed(scope).$value;
-                  }
                 }
               );
             }, 50, 500);
@@ -359,6 +355,15 @@
             // manually check $priority and $value using this method
             function watchExp(){
               var obj = parsed(scope);
+              for (var k in obj) {
+                if (obj.hasOwnProperty(k)) {
+                  var c = k.charAt(0);
+                  if (c !== '_' && c !== '$' && c !== '.') {
+                    delete obj.$value;
+                    return [obj, obj.$priority, undefined];
+                  }
+                }
+              }
               return [obj, obj.$priority, obj.$value];
             }
 
