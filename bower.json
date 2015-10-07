@@ -20,7 +20,7 @@
   "main": "dist/angularfire.js",
   "ignore": [
     "**/*",
-    "!dist/*.js"
+    "!dist/*.js",
     "!*.md"
   ],
   "dependencies": {
