@@ -6,7 +6,7 @@
  *
  * AngularFire 0.0.0
  * https://github.com/firebase/angularfire/
- * Date: 09/28/2015
+ * Date: 10/07/2015
  * License: MIT
  */
 (function(exports) {
